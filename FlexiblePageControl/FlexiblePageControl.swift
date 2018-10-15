@@ -44,7 +44,7 @@ public class FlexiblePageControl: UIView {
         update(currentPage: currentPage, config: config)
     }
 
-    public func setCurrentPage(at currentPage: Int, animated: Bool = false) {
+    @objc public func setCurrentPage(at currentPage: Int, animated: Bool = false) {
 
         guard (currentPage < numberOfPages && currentPage >= 0) else { return }
         guard currentPage != self.currentPage else { return }
@@ -55,9 +55,9 @@ public class FlexiblePageControl: UIView {
         self.currentPage = currentPage
     }
 
-    public private(set) var currentPage: Int = 0
+    @objc public private(set) var currentPage: Int = 0
     
-    public var numberOfPages: Int = 0 {
+    @objc public var numberOfPages: Int = 0 {
         didSet {
             scrollView.isHidden = (numberOfPages <= 1 && hidesForSinglePage)
             config.displayCount = min(config.displayCount, numberOfPages)
@@ -65,21 +65,21 @@ public class FlexiblePageControl: UIView {
         }
     }
 
-    public var pageIndicatorTintColor: UIColor = UIColor(red:0.86, green:0.86, blue:0.86, alpha:1.00) {
+    @objc public var pageIndicatorTintColor: UIColor = UIColor(red:0.86, green:0.86, blue:0.86, alpha:1.00) {
         didSet {
             updateDotColor(currentPage: currentPage)
         }
     }
 
-    public var currentPageIndicatorTintColor: UIColor = UIColor(red:0.32, green:0.59, blue:0.91, alpha:1.00) {
+    @objc public var currentPageIndicatorTintColor: UIColor = UIColor(red:0.32, green:0.59, blue:0.91, alpha:1.00) {
         didSet {
             updateDotColor(currentPage: currentPage)
         }
     }
 
-    public var animateDuration: TimeInterval = 0.3
+    @objc public var animateDuration: TimeInterval = 0.3
 
-    public var hidesForSinglePage: Bool = false {
+    @objc public var hidesForSinglePage: Bool = false {
         didSet {
             scrollView.isHidden = (numberOfPages <= 1 && hidesForSinglePage)
         }
@@ -120,13 +120,13 @@ public class FlexiblePageControl: UIView {
         return CGSize(width: itemSize * CGFloat(config.displayCount), height: itemSize)
     }
 
-    public func setProgress(contentOffsetX: CGFloat, pageWidth: CGFloat) {
+    @objc public func setProgress(contentOffsetX: CGFloat, pageWidth: CGFloat) {
 
         let currentPage = Int(round(contentOffsetX / pageWidth))
         setCurrentPage(at: currentPage, animated: true)
     }
 
-    public func updateViewSize() {
+    @objc public func updateViewSize() {
 
         self.bounds.size = intrinsicContentSize
     }
@@ -334,13 +334,13 @@ private class ItemView: UIView {
         case Normal
     }
 
-    static var mediumSizeRatio: CGFloat = 0.7
+    @objc static var mediumSizeRatio: CGFloat = 0.7
 
-    static var smallSizeRatio: CGFloat = 0.5
+    @objc static var smallSizeRatio: CGFloat = 0.5
 
-    var index: Int
+    @objc var index: Int
 
-    var dotColor = UIColor.lightGray {
+    @objc var dotColor = UIColor.lightGray {
         didSet {
             dotView.backgroundColor = dotColor
         }
@@ -352,9 +352,9 @@ private class ItemView: UIView {
         }
     }
 
-    var animateDuration: TimeInterval = 0.3
+    @objc var animateDuration: TimeInterval = 0.3
 
-    init(itemSize: CGFloat, dotSize: CGFloat, index: Int) {
+    @objc init(itemSize: CGFloat, dotSize: CGFloat, index: Int) {
         
         self.itemSize = itemSize
         self.dotSize = dotSize
