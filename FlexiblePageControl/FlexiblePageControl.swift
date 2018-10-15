@@ -12,26 +12,26 @@ public class FlexiblePageControl: UIView {
 
     // MARK: public
 
-    public var pageIndicatorTintColor: UIColor = UIColor(red:0.86, green:0.86, blue:0.86, alpha:1.00) {
+    @objc public var pageIndicatorTintColor: UIColor = UIColor(red:0.86, green:0.86, blue:0.86, alpha:1.00) {
         didSet {
             updateDotColor(currentPage: currentPage)
         }
     }
 
-    public var currentPageIndicatorTintColor: UIColor = UIColor(red:0.32, green:0.59, blue:0.91, alpha:1.00) {
+    @objc public var currentPageIndicatorTintColor: UIColor = UIColor(red:0.32, green:0.59, blue:0.91, alpha:1.00) {
         didSet {
             updateDotColor(currentPage: currentPage)
         }
     }
 
-    public var currentPage: Int = 0 {
+    @objc public var currentPage: Int = 0 {
         didSet {
             scrollView.layer.removeAllAnimations()
             setCurrentPage(currentPage: currentPage, animated: true)
         }
     }
 
-    public var numberOfPages: Int = 0 {
+    @objc public var numberOfPages: Int = 0 {
         didSet {
             scrollView.isHidden = (numberOfPages <= 1 && hidesForSinglePage)
             displayCount = min(displayCount, numberOfPages)
@@ -40,40 +40,40 @@ public class FlexiblePageControl: UIView {
 
     // Recommended displayCount is 5 or more.
 
-    public var displayCount: Int = 7 {
+    @objc public var displayCount: Int = 7 {
         didSet {
             canScroll = (numberOfPages > displayCount)
             update()
         }
     }
 
-    public var dotSize: CGFloat = 6 {
+    @objc public var dotSize: CGFloat = 6 {
         didSet {
             update()
         }
     }
 
-    public var dotSpace: CGFloat = 4 {
+    @objc public var dotSpace: CGFloat = 4 {
         didSet {
             update()
         }
     }
 
-    public var smallDotSizeRatio: CGFloat = 0.5 {
+    @objc public var smallDotSizeRatio: CGFloat = 0.5 {
         didSet {
             ItemView.smallSizeRatio = smallDotSizeRatio
         }
     }
 
-    public var mediumDotSizeRatio: CGFloat = 0.7 {
+    @objc public var mediumDotSizeRatio: CGFloat = 0.7 {
         didSet {
             ItemView.mediumSizeRatio = mediumDotSizeRatio
         }
     }
 
-    public var animateDuration: TimeInterval = 0.3
+    @objc public var animateDuration: TimeInterval = 0.3
 
-    public var hidesForSinglePage: Bool = false {
+    @objc public var hidesForSinglePage: Bool = false {
         didSet {
             scrollView.isHidden = (numberOfPages <= 1 && hidesForSinglePage)
         }
@@ -114,14 +114,14 @@ public class FlexiblePageControl: UIView {
         return CGSize(width: itemSize * CGFloat(displayCount), height: itemSize)
     }
 
-    public func setProgress(contentOffsetX: CGFloat, pageWidth: CGFloat) {
+    @objc public func setProgress(contentOffsetX: CGFloat, pageWidth: CGFloat) {
 
         let currentPage = Int(round(contentOffsetX/pageWidth))
         if currentPage == self.currentPage { return }
         self.currentPage = currentPage
     }
 
-    public func updateViewSize() {
+    @objc public func updateViewSize() {
 
         self.bounds.size = intrinsicContentSize
     }
@@ -330,13 +330,13 @@ private class ItemView: UIView {
         case Normal
     }
 
-    static var mediumSizeRatio: CGFloat = 0.7
+    @objc static var mediumSizeRatio: CGFloat = 0.7
 
-    static var smallSizeRatio: CGFloat = 0.5
+    @objc static var smallSizeRatio: CGFloat = 0.5
 
-    var index: Int
+    @objc var index: Int
 
-    var dotColor = UIColor.lightGray {
+    @objc var dotColor = UIColor.lightGray {
         didSet {
             dotView.backgroundColor = dotColor
         }
@@ -348,9 +348,9 @@ private class ItemView: UIView {
         }
     }
 
-    var animateDuration: TimeInterval = 0.3
+    @objc var animateDuration: TimeInterval = 0.3
 
-    init(itemSize: CGFloat, dotSize: CGFloat, index: Int) {
+    @objc init(itemSize: CGFloat, dotSize: CGFloat, index: Int) {
         
         self.itemSize = itemSize
         self.dotSize = dotSize
