@@ -173,12 +173,7 @@ public class FlexiblePageControl: UIView {
         let frame = CGRect(origin: .zero, size: size)
 
         scrollView.frame = frame
-
-        if displayCount < numberOfPages {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: itemSize * 2, bottom: 0, right: itemSize * 2)
-        } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        }
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
         setCurrentPage(currentPage: currentPage, animated: false)
     }
@@ -206,20 +201,21 @@ public class FlexiblePageControl: UIView {
         let duration = animated ? animateDuration : 0
 
         if currentPage == 0 {
-            let x = -scrollView.contentInset.left
-            moveScrollViewView(x: x, duration: duration)
+            moveScrollViewView(x: 0, duration: duration)
         }
         else if currentPage == numberOfPages - 1 {
             let x = scrollView.contentSize.width - scrollView.bounds.width + scrollView.contentInset.right
             moveScrollViewView(x: x, duration: duration)
         }
-        else if CGFloat(currentPage) * itemSize <= scrollView.contentOffset.x + itemSize {
-            let x = scrollView.contentOffset.x - itemSize
-            moveScrollViewView(x: x, duration: duration)
+        else if CGFloat(currentPage) * itemSize < scrollView.bounds.size.width / 2 {
+            moveScrollViewView(x: 0, duration: duration)
         }
-        else if CGFloat(currentPage) * itemSize + itemSize >= scrollView.contentOffset.x + scrollView.bounds.width - itemSize {
-            let x = scrollView.contentOffset.x + itemSize
-            moveScrollViewView(x: x, duration: duration)
+        else if CGFloat(currentPage) * itemSize > scrollView.bounds.size.width / 2 {
+            var x = (CGFloat(currentPage) + 0.5) * itemSize - scrollView.bounds.size.width / 2
+            x = min(x, scrollView.contentSize.width - scrollView.bounds.width)
+            moveScrollViewView(x: max(x, 0), duration: duration)
+        } else {
+            moveScrollViewView(x: 0, duration: duration)
         }
     }
 
@@ -285,36 +281,54 @@ public class FlexiblePageControl: UIView {
             let item = items[index]
 
             item.animateDuration = duration
-
-            if item.index == currentPage {
-                item.state = .Normal
-            }
-            // outside of left
-            else if item.index < 0 {
-                item.state = .None
-            }
-            // outside of right
-            else if item.index > numberOfPages - 1 {
-                item.state = .None
-            }
-            // first dot from left
-            else if item.frame.minX <= scrollView.contentOffset.x {
-                item.state = .Small
-            }
-            // first dot from right
-            else if item.frame.maxX >= scrollView.contentOffset.x + scrollView.bounds.width {
-                item.state = .Small
-            }
-            // second dot from left
-            else if item.frame.minX <= scrollView.contentOffset.x + itemSize {
-                item.state = .Medium
-            }
-            // second dot from right
-            else if item.frame.maxX >= scrollView.contentOffset.x + scrollView.bounds.width - itemSize {
-                item.state = .Medium
-            }
-            else {
-                item.state = .Normal
+            
+            if scrollView.contentOffset.x == 0 {
+                if item.index < displayCount - 1 || item.index == currentPage {
+                    item.state = .Normal
+                } else if item.index == displayCount - 1 {
+                    item.state = .Medium
+                } else {
+                    item.state = .None
+                }
+            } else if scrollView.contentOffset.x + scrollView.bounds.width ==  scrollView.contentSize.width  {
+                if item.index == numberOfPages - displayCount {
+                    item.state = .Medium
+                } else if item.index > numberOfPages - displayCount {
+                    item.state = .Normal
+                } else {
+                    item.state = .None
+                }
+            } else {
+                if item.index == currentPage {
+                    item.state = .Normal
+                }
+                    // outside of left
+                else if item.index < 0 {
+                    item.state = .None
+                }
+                    // outside of right
+                else if item.index > numberOfPages - 1 {
+                    item.state = .None
+                }
+                    // first dot from left
+                else if item.frame.minX <= scrollView.contentOffset.x {
+                    item.state = .Small
+                }
+                    // first dot from right
+                else if item.frame.maxX >= scrollView.contentOffset.x + scrollView.bounds.width {
+                    item.state = .Small
+                }
+                    // second dot from left
+                else if item.frame.minX <= scrollView.contentOffset.x + itemSize {
+                    item.state = .Medium
+                }
+                    // second dot from right
+                else if item.frame.maxX >= scrollView.contentOffset.x + scrollView.bounds.width - itemSize {
+                    item.state = .Medium
+                }
+                else {
+                    item.state = .Normal
+                }
             }
         }
     }
