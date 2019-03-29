@@ -283,17 +283,21 @@ public class FlexiblePageControl: UIView {
             item.animateDuration = duration
             
             if scrollView.contentOffset.x == 0 {
-                if item.index < displayCount - 1 || item.index == currentPage {
+                if item.index < displayCount - 2 || item.index == currentPage {
                     item.state = .Normal
                 } else if item.index == displayCount - 1 {
+                    item.state = .Small
+                }  else if item.index == displayCount - 2 {
                     item.state = .Medium
                 } else {
                     item.state = .None
                 }
             } else if scrollView.contentOffset.x + scrollView.bounds.width ==  scrollView.contentSize.width  {
                 if item.index == numberOfPages - displayCount {
+                    item.state = .Small
+                } else if item.index == numberOfPages - displayCount + 1 {
                     item.state = .Medium
-                } else if item.index > numberOfPages - displayCount {
+                } else if item.index > numberOfPages - displayCount + 1 {
                     item.state = .Normal
                 } else {
                     item.state = .None

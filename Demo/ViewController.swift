@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController, UIScrollViewDelegate {
     
     let scrollSize: CGFloat = 300
-    let numberOfPage: Int = 6
+    let numberOfPage: Int = 10
 
     let pageControl1 = FlexiblePageControl()
 
