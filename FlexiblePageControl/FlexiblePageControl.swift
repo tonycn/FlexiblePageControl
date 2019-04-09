@@ -26,13 +26,15 @@ public class FlexiblePageControl: UIView {
 
     @objc public var currentPage: Int {
         set {
-            let newPage = newValue;
+            var newPage = newValue;
+            newPage = max(0, newPage)
+            newPage = min(self.numberOfPages - 1, newPage)
             scrollView.layer.removeAllAnimations()
             if abs(newPage - self.currentPage) <= 1 {
                 self.innerCurrentPage = newValue
                 setCurrentPage(currentPage: newPage, animated: true)
             } else {
-                for _ in 2...abs(newPage - self.innerCurrentPage) {
+                for _ in 1...abs(newPage - self.innerCurrentPage) {
                     let direction = newPage - self.innerCurrentPage > 0 ? 1 : -1;
                     self.innerCurrentPage = self.innerCurrentPage+direction
                     setCurrentPage(currentPage: self.innerCurrentPage, animated: false)
