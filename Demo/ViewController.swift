@@ -30,8 +30,17 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         pageControl1.center = CGPoint(x: scrollView.center.x, y: scrollView.frame.maxY + 16)
         pageControl1.numberOfPages = numberOfPage
         pageControl1.displayCount = 5;
+        pageControl1.currentPage = numberOfPage
+        
+        for i in 1...10 {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1 + Double(i) * 0.5, execute: {
+                self.pageControl1.currentPage = 10 - i
+            })
+        }
         
         pageControl2.numberOfPages = numberOfPage
+        
 
         for index in  0..<numberOfPage {
             let view = UIImageView(frame: CGRect(x: CGFloat(index) * scrollSize, y: 0, width: scrollSize, height: scrollSize))

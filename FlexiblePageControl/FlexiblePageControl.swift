@@ -24,10 +24,23 @@ public class FlexiblePageControl: UIView {
         }
     }
 
-    @objc public var currentPage: Int = 0 {
-        didSet {
+    @objc public var currentPage: Int {
+        set {
+            let newPage = newValue;
             scrollView.layer.removeAllAnimations()
-            setCurrentPage(currentPage: currentPage, animated: true)
+            if abs(newPage - self.currentPage) <= 1 {
+                self.innerCurrentPage = newValue
+                setCurrentPage(currentPage: newPage, animated: true)
+            } else {
+                for _ in 2...abs(newPage - self.innerCurrentPage) {
+                    let direction = newPage - self.innerCurrentPage > 0 ? 1 : -1;
+                    self.innerCurrentPage = self.innerCurrentPage+direction
+                    setCurrentPage(currentPage: self.innerCurrentPage, animated: false)
+                }
+            }
+        }
+        get {
+            return self.innerCurrentPage
         }
     }
 
@@ -78,6 +91,8 @@ public class FlexiblePageControl: UIView {
             scrollView.isHidden = (numberOfPages <= 1 && hidesForSinglePage)
         }
     }
+    
+    private var innerCurrentPage : Int = 0
 
     public init() {
 
